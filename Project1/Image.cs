@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace ImageProcess
@@ -36,6 +38,46 @@ namespace ImageProcess
         public void Reset()
         {
             postImage = new Bitmap(baseImage);
+        }
+
+        /// <summary>
+        /// clear output image to a specific color
+        /// </summary>
+        public void Clear(Color color)
+        {
+            for (int r = 0; r < postImage.Height; r++)
+            {
+                // Looping over the columns of the array
+                for (int c = 0; c < postImage.Width; c++)
+                {
+                    postImage.SetPixel(c, r, color);
+                }
+            }
+        }
+
+        public Color GetMostCommonColor()
+        {
+            Dictionary<Color, int> colorCount = new Dictionary<Color, int>();
+
+            for (int y = 0; y < baseImage.Height; y++)
+            {
+                // Looping over the columns of the array
+                for (int x = 0; x < baseImage.Width; x++)
+                {
+                    var color = baseImage.GetPixel(x, y);
+
+                    if (colorCount.ContainsKey(color))
+                    {
+                        colorCount[baseImage.GetPixel(x, y)]++;
+                    }
+                    else
+                    {
+                        colorCount.Add(color, 1);
+                    }
+                }
+            }
+
+            return colorCount.OrderBy(c => c.Value).Last().Key;
         }
 
         /// <summary>

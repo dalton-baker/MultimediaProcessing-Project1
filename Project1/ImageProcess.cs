@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.Windows;
-using System.Windows.Forms;
 using System.Windows.Media;
 
 namespace ImageProcess
 {
-    public class ImageProcess :ImageEditor
+    public partial class ImageProcess : ImageEditor
     {
         // stickman filter stuff
         private Bitmap stickman;
@@ -121,7 +119,7 @@ namespace ImageProcess
             {
                 for (int c = 0; c < image.PostImage.Width; c++)
                 {
-                    Color pixel = Color.Black;
+                    Color pixel;
                     int tallyR = 0;
                     int tallyG = 0;
                     int tallyB = 0;

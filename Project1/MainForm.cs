@@ -2,28 +2,50 @@
 using System.Windows.Forms;
 
 /**********************************************************************************
-* Mark off what items are complete (e.g. x, done, checkmark, etc), and put a P if 
-* partially complete. If 'P' include how to test what is working for partial credit 
-* below the checklist line.
-*
-* Total available points:  100
-* ✓______	25	Tutorial completed (if not, what was the last section completed)
-* ✓______	10	My Favorite Color
-* ✓______	5	Horizontal Gradient Image
-* ✓______	5	Vertical Gradient Image
-* ✓______	10	Diagonal Gradient Image
-* ✓______	5	Horizontal Line
-* ✓______	5	Vertical Wider Line
-* ✓______	10	Diagonal Line
-* ✓______	10	Monochrome Image Filter
-* ✓______	15	Median Filter
-* ______	Total (please add the points and include the total here)
+* Mark off what items are complete, and put a P if partially complete. For the 
+* categories, name the filter and its points. If you crete more than one per 
+* category, list their names and their poitns below the required command for that 
+* catagory.
+* 
+* Total available points:  200 (250 for CSC 692)
+* 
+*  __ 8pt make a new\open\save image under a File Menu and add Project 1 menu
+*  __ 2pt display the current state of the image 
+*  __ 10pt A 5X5 square blur filter 
+*  __ 15pt A 5X5 Prewit or Sorbel filter 
+*  __ 10pt A rotate about the center (uses a dialog box to set the amount) 
+*  __ 15pt A flip horizontally and translate (x and y) afterwards (uses a dialog box to set the amount) 
+*  __ 20pt A blue or green screen composition. You may use a default image for the mask. 
+*  __ 30pt OPTIONAL for individuals, and required for teams slide show
+*  
+* _____________[?pt] Required Blur\Sharpen\Contrast\Filter
+* _____________[?pt] Other Blur\Sharpen\Contrast\Filter
+* ...
+* 
+* _____________[?pt] Required Feature Extraction
+* _____________[?pt] Other Feature Extraction
+* ...
+* 
+* _____________[?pt] Required Linear warp
+* _____________[?pt] Other Linear warp
+* ...
+* 
+* _____________[?pt] Required Non-linear warp
+* _____________[?pt] Other Non-linear warp
+* ...
+* 
+* _____________[?pt] Required Composition
+* _____________[?pt] Other Composition
+* ...
+* 
+* _____________[?pt] OPTIONAL Misc 
+* ...
 * 
 * The grade you compute is the starting point for course staff, who reserve the 
 * right to change the grade if they disagree with your assessment and to deduct 
 * points for other issues they may encounter, such as errors in the submission 
 * process, naming issues, etc.
-*
+* 
 **********************************************************************************/
 
 namespace ImageProcess
@@ -358,6 +380,20 @@ namespace ImageProcess
         {
             editor.SetMode(ImageEditor.MODE.None);
             ImageProcess.OnFilterMonochrome(model);
+            drawMenu.Checked = editor.MouseMode == ImageEditor.MODE.Draw;
+
+            Invalidate();
+        }
+
+        private void sharpen3X3ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pointillizeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            editor.SetMode(ImageEditor.MODE.None);
+            ImageProcess.OnPointillize(model);
             drawMenu.Checked = editor.MouseMode == ImageEditor.MODE.Draw;
 
             Invalidate();
