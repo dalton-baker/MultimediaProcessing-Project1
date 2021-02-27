@@ -31,7 +31,7 @@ namespace ImageProcess.Dialogs
         {
             this.OkButton = new System.Windows.Forms.Button();
             this.AngleSlider = new System.Windows.Forms.TrackBar();
-            this.CancelButton = new System.Windows.Forms.Button();
+            this.Cancel = new System.Windows.Forms.Button();
             this.AngleLabel = new System.Windows.Forms.Label();
             this.ValueBox = new System.Windows.Forms.TextBox();
             this.promptLabel = new System.Windows.Forms.Label();
@@ -41,7 +41,7 @@ namespace ImageProcess.Dialogs
             // OkButton
             // 
             this.OkButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.OkButton.Location = new System.Drawing.Point(343, 71);
+            this.OkButton.Location = new System.Drawing.Point(347, 76);
             this.OkButton.Name = "OkButton";
             this.OkButton.Size = new System.Drawing.Size(75, 23);
             this.OkButton.TabIndex = 0;
@@ -51,27 +51,27 @@ namespace ImageProcess.Dialogs
             // 
             // AngleSlider
             // 
-            this.AngleSlider.Location = new System.Drawing.Point(12, 25);
+            this.AngleSlider.Location = new System.Drawing.Point(12, 27);
             this.AngleSlider.Maximum = 360;
             this.AngleSlider.Minimum = -360;
             this.AngleSlider.Name = "AngleSlider";
-            this.AngleSlider.Size = new System.Drawing.Size(406, 45);
+            this.AngleSlider.Size = new System.Drawing.Size(410, 45);
             this.AngleSlider.TabIndex = 2;
             // 
-            // CancelButton
+            // Cancel
             // 
-            this.CancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.CancelButton.Location = new System.Drawing.Point(262, 71);
-            this.CancelButton.Name = "CancelButton";
-            this.CancelButton.Size = new System.Drawing.Size(75, 23);
-            this.CancelButton.TabIndex = 4;
-            this.CancelButton.Text = "Cancel";
-            this.CancelButton.UseVisualStyleBackColor = true;
+            this.Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.Cancel.Location = new System.Drawing.Point(266, 76);
+            this.Cancel.Name = "Cancel";
+            this.Cancel.Size = new System.Drawing.Size(75, 23);
+            this.Cancel.TabIndex = 4;
+            this.Cancel.Text = "Cancel";
+            this.Cancel.UseVisualStyleBackColor = true;
             // 
             // AngleLabel
             // 
             this.AngleLabel.AutoSize = true;
-            this.AngleLabel.Location = new System.Drawing.Point(12, 76);
+            this.AngleLabel.Location = new System.Drawing.Point(12, 81);
             this.AngleLabel.Name = "AngleLabel";
             this.AngleLabel.Size = new System.Drawing.Size(37, 13);
             this.AngleLabel.TabIndex = 5;
@@ -79,7 +79,7 @@ namespace ImageProcess.Dialogs
             // 
             // ValueBox
             // 
-            this.ValueBox.Location = new System.Drawing.Point(55, 73);
+            this.ValueBox.Location = new System.Drawing.Point(55, 78);
             this.ValueBox.Name = "ValueBox";
             this.ValueBox.Size = new System.Drawing.Size(45, 20);
             this.ValueBox.TabIndex = 6;
@@ -99,15 +99,14 @@ namespace ImageProcess.Dialogs
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(430, 106);
+            this.ClientSize = new System.Drawing.Size(434, 111);
             this.Controls.Add(this.promptLabel);
             this.Controls.Add(this.ValueBox);
             this.Controls.Add(this.AngleLabel);
-            this.Controls.Add(this.CancelButton);
+            this.Controls.Add(this.Cancel);
             this.Controls.Add(this.AngleSlider);
             this.Controls.Add(this.OkButton);
             this.Name = "AngleDialog";
-            this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.AngleSlider)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -118,7 +117,7 @@ namespace ImageProcess.Dialogs
 
         private System.Windows.Forms.Button OkButton;
         private System.Windows.Forms.TrackBar AngleSlider;
-        private System.Windows.Forms.Button CancelButton;
+        private System.Windows.Forms.Button Cancel;
         private System.Windows.Forms.Label AngleLabel;
         private System.Windows.Forms.TextBox ValueBox;
         private System.Windows.Forms.Label promptLabel;

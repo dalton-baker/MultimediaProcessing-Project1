@@ -134,15 +134,48 @@ namespace ImageProcess
         {
             image.Reset();
 
+            Matrix rotate = Matrix.Identity;
+            rotate.RotateAt(angle, image.BaseImage.Width / 2, image.BaseImage.Height / 2);
+
+            image.ApplyMatrix(rotate);
+        }
+
+        public static void OnFlipAndTranslate(Image image, int xTrans, int yTrans)
+        {
+            image.Reset();
+
+            Image tempImage = new Image(image);
+            tempImage.PostImage.RotateFlip(RotateFlipType.RotateNoneFlipX);
+
             Matrix t1 = Matrix.Identity;
-            Matrix r = Matrix.Identity;
-            Matrix t2 = Matrix.Identity;
+            t1.Translate(xTrans, yTrans);
+            image.ApplyMatrix(t1, tempImage);
+        }
 
-            t2.Translate(image.BaseImage.Width / 2, image.BaseImage.Height / 2);
-            r.Rotate(angle);
-            t1.Translate(-image.BaseImage.Width / 2, -image.BaseImage.Height / 2);
+        public static void OnGreenScreen(Image backImg, Image frontImg, double a1, double a2, int xOffset = 0, int yOffset = 0)
+        {
+            backImg.Reset();
+            frontImg.Reset();
 
-            image.ApplyMatrix(t1 * r * t2);
+            backImg.ApplyDelegate((c, x, y) =>
+            {                
+                if (x < frontImg.PostImage.Width + xOffset && x >= xOffset &&
+                    y < frontImg.PostImage.Height + yOffset && y >= yOffset)
+                {
+                    Color frontImgColor = frontImg.PostImage.GetPixel(x - xOffset, y - yOffset);
+
+                    double alpha = 1 - (a1 * ((frontImgColor.B/255.0) - (a2 * (frontImgColor.G / 255.0))));
+
+                    int red = (int)((alpha * frontImgColor.R) + ((1 - alpha) * c.R));
+                    int green = (int)((alpha * frontImgColor.G) + ((1 - alpha) * c.G));
+                    int blue = (int)((alpha * frontImgColor.B) + ((1 - alpha) * c.B));
+
+                    return Color.FromArgb(red.Normalize(), green.Normalize(), blue.Normalize());
+                }
+
+                return c;
+            });
+
         }
     }
 }

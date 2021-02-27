@@ -15,8 +15,8 @@ using System.Windows.Forms;
 *  ✓________ 10pt A 5X5 square blur filter 
 *  ✓________ 15pt A 5X5 Prewit or Sorbel filter 
 *  ✓________ 10pt A rotate about the center (uses a dialog box to set the amount) 
-*  ________ 15pt A flip horizontally and translate (x and y) afterwards (uses a dialog box to set the amount) 
-*  ________ 20pt A blue or green screen composition. You may use a default image for the mask. 
+*  ✓________ 15pt A flip horizontally and translate (x and y) afterwards (uses a dialog box to set the amount) 
+*  ✓________ 20pt A blue or green screen composition. You may use a default image for the mask. 
 *  ________ 30pt OPTIONAL for individuals, and required for teams slide show
 *  
 * ✓________ [Pointilize 30pts] Required Blur\Sharpen\Contrast\Filter
@@ -45,6 +45,7 @@ namespace ImageProcess
         enum ModelType { None, Generate, Process }; //mode for menu enabling
 
         Image model;
+        Image bluescreen = null;
         ImageEditor editor;
 
 
@@ -63,6 +64,10 @@ namespace ImageProcess
                 return;
 
             model.OnPaint(e);
+            if (bluescreen != null)
+            {
+                bluescreen.OnPaintSecondImage(e);
+            }
         }
 
         //redraw on resize
@@ -185,6 +190,11 @@ namespace ImageProcess
                 model.OnOpenDocument(openFileDialog1.FileName);
                 editor = new ImageProcess();
                 SetMenuOptionEnable(ModelType.Process);
+
+                if(bluescreen != null)
+                {
+                    bluescreen.Offset = menuStrip1.Height + model.BaseImage.Height;
+                }
                 Invalidate();
             }
         }
@@ -413,6 +423,43 @@ namespace ImageProcess
 
                 Invalidate();
             }
+        }
+
+        private void horizontalFlipTranslateToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            TranslateDialog dialog = new TranslateDialog();
+
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                editor.SetMode(ImageEditor.MODE.None);
+                ImageProcess.OnFlipAndTranslate(model, dialog.X, dialog.Y);
+
+                Invalidate();
+            }
+        }
+
+        private void blueScreeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            model = new Image(menuStrip1.Height);
+            model.OnOpenImage(Properties.Resources.NewYork, true);
+
+            bluescreen = new Image(menuStrip1.Height + model.BaseImage.Height);
+            bluescreen.OnOpenImage(Properties.Resources.Bluescreen);
+            editor = new ImageProcess();
+
+            editor.SetMode(ImageEditor.MODE.None);
+            ImageProcess.OnGreenScreen(model, bluescreen, 4.1, 1, 200);
+
+            Invalidate();
+
+            //GreenscreenDialog dialog = new GreenscreenDialog();
+            //if (dialog.ShowDialog() == DialogResult.OK)
+            //{
+            //    editor.SetMode(ImageEditor.MODE.None);
+            //    ImageProcess.OnGreenScreen(model, bluescreen, dialog.A1, dialog.A2);
+
+            //    Invalidate();
+            //}
         }
     }
 }

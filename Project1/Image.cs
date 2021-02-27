@@ -14,14 +14,13 @@ namespace ImageProcess
         {
             ORIGINAL, POST
         }
-        private readonly int offset;
         private Bitmap baseImage;
         private Bitmap postImage;
         private MODE mode = MODE.ORIGINAL;
 
         public Bitmap BaseImage => baseImage;
         public Bitmap PostImage => postImage;
-        public int Offset => offset;
+        public int Offset { get; set; }
 
         /// <summary>
         /// yOffset should be the menu bar height
@@ -29,14 +28,16 @@ namespace ImageProcess
         /// <param name="yOffest"></param>
         public Image(int yOffest)
         {
-            offset = yOffest;
+            Offset = yOffest;
             baseImage = new Bitmap(600, 400);
+            Reset();
         }
 
         public Image(Image image)
         {
-            offset = image.Offset;
+            Offset = image.Offset;
             baseImage = new Bitmap(image.BaseImage);
+            Reset();
         }
 
         /// <summary>
@@ -62,7 +63,7 @@ namespace ImageProcess
                 // Looping over the columns of the array
                 for (int c = 0; c < postImage.Width; c++)
                 {
-                    postImage.SetPixel(c, r, color.HasValue ? color.Value : Color.White);
+                    postImage.SetPixel(c, r, color ?? Color.White);
                 }
             }
         }
@@ -121,6 +122,17 @@ namespace ImageProcess
             return true;
         }
 
+        public void OnOpenImage(Bitmap image, bool showPostImg = false)
+        {
+            if(showPostImg)
+            {
+                mode = MODE.POST;
+            }
+
+            baseImage = new Bitmap(image);
+            baseImage.SetResolution(96, 96);
+            Reset();
+        }
 
         //save base is the mode is the original (generate), and save the edited one if 
         // if the most is post process (process)
@@ -149,7 +161,7 @@ namespace ImageProcess
             if (mode == MODE.ORIGINAL)
             {
                 //draw only the original
-                g.DrawImage(baseImage, 0, offset);
+                g.DrawImage(baseImage, 0, Offset);
             }
             else if (mode == MODE.POST)
             {
@@ -157,8 +169,8 @@ namespace ImageProcess
                 if (baseImage == null)
                     return;
 
-                g.DrawImage(baseImage, 0, offset, baseImage.Width, baseImage.Height);
-                g.DrawImage(postImage, baseImage.Width + 2, offset, postImage.Width, postImage.Height);
+                g.DrawImage(baseImage, 0, Offset, baseImage.Width, baseImage.Height);
+                g.DrawImage(postImage, baseImage.Width + 2, Offset, postImage.Width, postImage.Height);
 
                 //
                 // Draw a bar between the two images
@@ -168,8 +180,14 @@ namespace ImageProcess
                     Width = 3
                 };
 
-                g.DrawLine(black, new PointF(baseImage.Width, offset), new PointF(baseImage.Width, baseImage.Height + offset));
+                g.DrawLine(black, new PointF(baseImage.Width, Offset), new PointF(baseImage.Width, baseImage.Height + Offset));
             }
+        }
+
+        public void OnPaintSecondImage(PaintEventArgs e)
+        {
+            Graphics g = e.Graphics;
+            g.DrawImage(baseImage, 0, Offset);
         }
 
         /// <summary>
@@ -309,7 +327,7 @@ namespace ImageProcess
             }
         }
 
-        public void ApplyMatrix(System.Windows.Media.Matrix matrix)
+        public void ApplyMatrix(System.Windows.Media.Matrix matrix, Image imageToDraw = null)
         {
             Clear();
 
@@ -320,7 +338,7 @@ namespace ImageProcess
 
             Graphics g = Graphics.FromImage(postImage);
             g.MultiplyTransform(twoDmatrix);
-            g.DrawImage(baseImage, new Point(0, 0));
+            g.DrawImage(imageToDraw == null ? baseImage : imageToDraw.PostImage, new Point(0, 0));
         }
     }
 }

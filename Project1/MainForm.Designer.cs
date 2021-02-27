@@ -67,6 +67,7 @@
             this.blurSharpenContrastFilterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pointillizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.featureExtractionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.sorbelFilter5X5ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.linearWarpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.nonLinearWarpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.compositionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -78,7 +79,6 @@
             this.blueScreeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-            this.sorbelFilter5X5ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -91,7 +91,7 @@
             this.project1ToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(800, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1140, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -111,42 +111,42 @@
             // newMenu
             // 
             this.newMenu.Name = "newMenu";
-            this.newMenu.Size = new System.Drawing.Size(126, 22);
+            this.newMenu.Size = new System.Drawing.Size(180, 22);
             this.newMenu.Text = "New";
             this.newMenu.Click += new System.EventHandler(this.newMenu_Click);
             // 
             // openTestMenu
             // 
             this.openTestMenu.Name = "openTestMenu";
-            this.openTestMenu.Size = new System.Drawing.Size(126, 22);
+            this.openTestMenu.Size = new System.Drawing.Size(180, 22);
             this.openTestMenu.Text = "Open Test";
             this.openTestMenu.Click += new System.EventHandler(this.openTestMenu_Click);
             // 
             // openMenu
             // 
             this.openMenu.Name = "openMenu";
-            this.openMenu.Size = new System.Drawing.Size(126, 22);
+            this.openMenu.Size = new System.Drawing.Size(180, 22);
             this.openMenu.Text = "Open";
             this.openMenu.Click += new System.EventHandler(this.openMenu_Click);
             // 
             // closeMenu
             // 
             this.closeMenu.Name = "closeMenu";
-            this.closeMenu.Size = new System.Drawing.Size(126, 22);
+            this.closeMenu.Size = new System.Drawing.Size(180, 22);
             this.closeMenu.Text = "Close";
             this.closeMenu.Click += new System.EventHandler(this.closeMenu_Click);
             // 
             // saveMenu
             // 
             this.saveMenu.Name = "saveMenu";
-            this.saveMenu.Size = new System.Drawing.Size(126, 22);
+            this.saveMenu.Size = new System.Drawing.Size(180, 22);
             this.saveMenu.Text = "Save";
             this.saveMenu.Click += new System.EventHandler(this.saveMenu_Click);
             // 
             // exitMenu
             // 
             this.exitMenu.Name = "exitMenu";
-            this.exitMenu.Size = new System.Drawing.Size(126, 22);
+            this.exitMenu.Size = new System.Drawing.Size(180, 22);
             this.exitMenu.Text = "Exit";
             this.exitMenu.Click += new System.EventHandler(this.exitMenu_Click);
             // 
@@ -384,6 +384,13 @@
             this.featureExtractionToolStripMenuItem.Size = new System.Drawing.Size(224, 22);
             this.featureExtractionToolStripMenuItem.Text = "Feature Extraction";
             // 
+            // sorbelFilter5X5ToolStripMenuItem
+            // 
+            this.sorbelFilter5X5ToolStripMenuItem.Name = "sorbelFilter5X5ToolStripMenuItem";
+            this.sorbelFilter5X5ToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
+            this.sorbelFilter5X5ToolStripMenuItem.Text = "Sorbel Filter 5X5";
+            this.sorbelFilter5X5ToolStripMenuItem.Click += new System.EventHandler(this.sorbelFilter5X5ToolStripMenuItem_Click);
+            // 
             // linearWarpToolStripMenuItem
             // 
             this.linearWarpToolStripMenuItem.Name = "linearWarpToolStripMenuItem";
@@ -440,12 +447,14 @@
             this.horizontalFlipTranslateToolStripMenuItem.Name = "horizontalFlipTranslateToolStripMenuItem";
             this.horizontalFlipTranslateToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
             this.horizontalFlipTranslateToolStripMenuItem.Text = "Horizontal Flip And Translate";
+            this.horizontalFlipTranslateToolStripMenuItem.Click += new System.EventHandler(this.horizontalFlipTranslateToolStripMenuItem_Click);
             // 
             // blueScreeToolStripMenuItem
             // 
             this.blueScreeToolStripMenuItem.Name = "blueScreeToolStripMenuItem";
             this.blueScreeToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
             this.blueScreeToolStripMenuItem.Text = "Blue Screen";
+            this.blueScreeToolStripMenuItem.Click += new System.EventHandler(this.blueScreeToolStripMenuItem_Click);
             // 
             // openFileDialog1
             // 
@@ -457,18 +466,11 @@
             this.saveFileDialog1.Filter = "JPEG Files (*.jpg)|*.jpg|GIF Files (*.gif)|*.gif|PNG Files (*.png)|*.png|BMP File" +
     "s (*.bmp)| *.bmp";
             // 
-            // sorbelFilter5X5ToolStripMenuItem
-            // 
-            this.sorbelFilter5X5ToolStripMenuItem.Name = "sorbelFilter5X5ToolStripMenuItem";
-            this.sorbelFilter5X5ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.sorbelFilter5X5ToolStripMenuItem.Text = "Sorbel Filter 5X5";
-            this.sorbelFilter5X5ToolStripMenuItem.Click += new System.EventHandler(this.sorbelFilter5X5ToolStripMenuItem_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(1140, 536);
             this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
