@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ImageProcess.Dialogs;
+using System;
 using System.Windows.Forms;
 
 /**********************************************************************************
@@ -403,10 +404,15 @@ namespace ImageProcess
 
         private void centerRotateToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            editor.SetMode(ImageEditor.MODE.None);
-            ImageProcess.OnRotate(model);
+            AngleDialog dialog = new AngleDialog();
 
-            Invalidate();
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                editor.SetMode(ImageEditor.MODE.None);
+                ImageProcess.OnRotateCenter(model, dialog.Angle);
+
+                Invalidate();
+            }
         }
     }
 }

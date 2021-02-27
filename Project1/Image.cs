@@ -55,14 +55,14 @@ namespace ImageProcess
         /// <summary>
         /// clear output image to a specific color
         /// </summary>
-        public void Clear(Color color)
+        public void Clear(Color? color = null)
         {
             for (int r = 0; r < postImage.Height; r++)
             {
                 // Looping over the columns of the array
                 for (int c = 0; c < postImage.Width; c++)
                 {
-                    postImage.SetPixel(c, r, color);
+                    postImage.SetPixel(c, r, color.HasValue ? color.Value : Color.White);
                 }
             }
         }
@@ -107,6 +107,7 @@ namespace ImageProcess
                 else
                     baseImage = new Bitmap(path);
 
+                baseImage.SetResolution(96, 96);
                 postImage = new Bitmap(baseImage); //copy bitmap
 
                 mode = MODE.POST;
@@ -310,6 +311,8 @@ namespace ImageProcess
 
         public void ApplyMatrix(System.Windows.Media.Matrix matrix)
         {
+            Clear();
+
             Matrix twoDmatrix = new Matrix(
                 (float)matrix.M11, (float)matrix.M12,
                 (float)matrix.M21, (float)matrix.M22,
@@ -317,6 +320,7 @@ namespace ImageProcess
 
             Graphics g = Graphics.FromImage(postImage);
             g.MultiplyTransform(twoDmatrix);
+            g.DrawImage(baseImage, new Point(0, 0));
         }
     }
 }

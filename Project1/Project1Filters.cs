@@ -12,7 +12,7 @@ namespace ImageProcess
         {
             image.Reset();
 
-            int elipseSize = 10;
+            int elipseSize = 14;
             int numberOfPoints = image.BaseImage.Width * image.BaseImage.Height / (elipseSize / 2);
             Random rand = new Random();
             image.Clear(Color.White);
@@ -132,29 +132,19 @@ namespace ImageProcess
             });
         }
 
-        public static void OnRotate(Image image)
+        public static void OnRotateCenter(Image image, double angle)
         {
             image.Reset();
 
-            Matrix m = Matrix.Identity;
             Matrix t1 = Matrix.Identity;
             Matrix r = Matrix.Identity;
             Matrix t2 = Matrix.Identity;
-            
-            t2.Translate(image.BaseImage.Width, image.BaseImage.Height); 
-            r.Rotate(30); 
-            t1.Translate(-image.BaseImage.Width, -image.BaseImage.Height);
 
-            m = t1 * r * t2;
+            t2.Translate(image.BaseImage.Width / 2, image.BaseImage.Height / 2);
+            r.Rotate(angle);
+            t1.Translate(-image.BaseImage.Width / 2, -image.BaseImage.Height / 2);
 
-            System.Drawing.Drawing2D.Matrix twoDmatrix = 
-                new System.Drawing.Drawing2D.Matrix(
-                (float)m.M11, (float)m.M12,
-                (float)m.M21, (float)m.M22,
-                (float)m.OffsetX, (float)m.OffsetY);
-
-            Graphics g = Graphics.FromImage(image.PostImage);
-            g.MultiplyTransform(twoDmatrix);
+            image.ApplyMatrix(t1 * r * t2);
         }
     }
 }
