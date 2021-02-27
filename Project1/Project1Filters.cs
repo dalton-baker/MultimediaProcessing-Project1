@@ -177,5 +177,39 @@ namespace ImageProcess
             });
 
         }
+
+        public static void OnSubSectionWarp(Image image)
+        {
+            image.Reset();
+
+            Random random = new Random(Guid.NewGuid().GetHashCode());
+
+            int xOffset = random.Next(0, image.BaseImage.Width / 2);
+            int yOffset = random.Next(0, image.BaseImage.Height / 2);
+
+            int subWidth = random.Next(image.BaseImage.Width / 4, image.BaseImage.Width / 2);
+            int subHeight = random.Next(image.BaseImage.Height / 4, image.BaseImage.Height / 2);
+
+            Image subImage = new Image(0);
+            subImage.OnOpenImage(new Bitmap(subWidth, subHeight));
+            subImage.ApplyDelegate((c, x, y) =>
+            {
+                return image.BaseImage.GetPixel(x + xOffset, y + yOffset);
+            });
+            subImage.Rebase();
+
+            OnRotateCenter(subImage, random.Next(0, 1) == 0 ? random.Next(5, 180) : random.Next(-180, -5));
+
+            image.ApplyDelegate((c, x, y) =>
+            {
+                if (x < subWidth + xOffset && x >= xOffset &&
+                    y < subHeight + yOffset && y >= yOffset)
+                {
+                    return subImage.PostImage.GetPixel(x - xOffset, y - yOffset);
+                }
+
+                return c;
+            });
+        }
     }
 }

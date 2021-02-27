@@ -79,6 +79,7 @@
             this.blueScreeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.subSectionWarpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -393,6 +394,8 @@
             // 
             // linearWarpToolStripMenuItem
             // 
+            this.linearWarpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.subSectionWarpToolStripMenuItem});
             this.linearWarpToolStripMenuItem.Name = "linearWarpToolStripMenuItem";
             this.linearWarpToolStripMenuItem.Size = new System.Drawing.Size(224, 22);
             this.linearWarpToolStripMenuItem.Text = "Linear Warp";
@@ -466,6 +469,13 @@
             this.saveFileDialog1.Filter = "JPEG Files (*.jpg)|*.jpg|GIF Files (*.gif)|*.gif|PNG Files (*.png)|*.png|BMP File" +
     "s (*.bmp)| *.bmp";
             // 
+            // subSectionWarpToolStripMenuItem
+            // 
+            this.subSectionWarpToolStripMenuItem.Name = "subSectionWarpToolStripMenuItem";
+            this.subSectionWarpToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.subSectionWarpToolStripMenuItem.Text = "Sub Section Warp";
+            this.subSectionWarpToolStripMenuItem.Click += new System.EventHandler(this.subSectionWarpToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -535,6 +545,7 @@
         private System.Windows.Forms.ToolStripMenuItem blueScreeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem pointillizeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem sorbelFilter5X5ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem subSectionWarpToolStripMenuItem;
     }
 }
 

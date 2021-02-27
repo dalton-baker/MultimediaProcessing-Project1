@@ -13,7 +13,7 @@ using System.Windows.Forms;
 *  ✓________ 8pt make a new\open\save image under a File Menu and add Project 1 menu
 *  ✓________ 2pt display the current state of the image 
 *  ✓________ 10pt A 5X5 square blur filter 
-*  ✓________ 15pt A 5X5 Prewit or Sorbel filter 
+*  ✓________ 15pt A 3X3 Prewit or Sorbel filter 
 *  ✓________ 10pt A rotate about the center (uses a dialog box to set the amount) 
 *  ✓________ 15pt A flip horizontally and translate (x and y) afterwards (uses a dialog box to set the amount) 
 *  ✓________ 20pt A blue or green screen composition. You may use a default image for the mask. 
@@ -23,7 +23,7 @@ using System.Windows.Forms;
 * 
 * ✓________ [Sorbel 10pts] Required Feature Extraction
 * 
-* ________ [?pt] Required Linear warp
+* ✓________ [Linear warp a sub selection 20pt] Required Linear warp
 * 
 * ________ [?pt] Required Non-linear warp
 * 
@@ -236,6 +236,7 @@ namespace ImageProcess
                     verticalLineToolStripMenuItem.Enabled = on;
                     horizontalLineToolStripMenuItem.Enabled = on;
                     diagonalLineToolStripMenuItem.Enabled = on;
+                    project1ToolStripMenuItem.Enabled = on;
                     copyMenu.Enabled = on;
                     negativeMenu.Enabled = on;
                     thresholdMenu.Enabled = on;
@@ -269,6 +270,7 @@ namespace ImageProcess
                     lowpassFilterToolStripMenuItem.Enabled = !on;
                     monochromeToolStripMenuItem.Enabled = !on;
                     medianFilterToolStripMenuItem.Enabled = !on;
+                    project1ToolStripMenuItem.Enabled = !on;
                     warpMenu.Enabled = !on;
                     warpBilinearMenu.Enabled = !on;
 
@@ -286,6 +288,7 @@ namespace ImageProcess
                     verticalLineToolStripMenuItem.Enabled = on;
                     horizontalLineToolStripMenuItem.Enabled = on;
                     diagonalLineToolStripMenuItem.Enabled = on;
+                    project1ToolStripMenuItem.Enabled = !on;
                     copyMenu.Enabled = !on;
                     negativeMenu.Enabled = !on;
                     thresholdMenu.Enabled = !on;
@@ -460,6 +463,14 @@ namespace ImageProcess
 
             //    Invalidate();
             //}
+        }
+
+        private void subSectionWarpToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            editor.SetMode(ImageEditor.MODE.None);
+            ImageProcess.OnSubSectionWarp(model);
+
+            Invalidate();
         }
     }
 }
