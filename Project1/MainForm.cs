@@ -14,7 +14,7 @@ using System.Windows.Forms;
 *  ✓________ 2pt display the current state of the image 
 *  ✓________ 10pt A 5X5 square blur filter 
 *  ✓________ 15pt A 5X5 Prewit or Sorbel filter 
-*  ________ 10pt A rotate about the center (uses a dialog box to set the amount) 
+*  ✓________ 10pt A rotate about the center (uses a dialog box to set the amount) 
 *  ________ 15pt A flip horizontally and translate (x and y) afterwards (uses a dialog box to set the amount) 
 *  ________ 20pt A blue or green screen composition. You may use a default image for the mask. 
 *  ________ 30pt OPTIONAL for individuals, and required for teams slide show

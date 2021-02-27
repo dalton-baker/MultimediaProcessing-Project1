@@ -84,6 +84,7 @@ namespace ImageProcess.Dialogs
             this.ValueBox.Size = new System.Drawing.Size(45, 20);
             this.ValueBox.TabIndex = 6;
             this.ValueBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.ValueBox_KeyPress);
+            this.ValueBox.Leave += new System.EventHandler(this.ValueBox_Leave);
             // 
             // promptLabel
             // 

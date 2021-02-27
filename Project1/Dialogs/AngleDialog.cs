@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ImageProcess.Dialogs
@@ -32,6 +25,18 @@ namespace ImageProcess.Dialogs
                 AngleSlider.Focus();
                 e.Handled = true;
             }
+        }
+
+        private void ValueBox_Leave(object sender, EventArgs e)
+        {
+            int actualValue = 0;
+
+            if(int.TryParse(ValueBox.Text, out int textBoxInt))
+            {
+                actualValue = Math.Max(-360, Math.Min(360, textBoxInt));
+            }
+
+            ValueBox.Text = actualValue.ToString();
         }
     }
 }
