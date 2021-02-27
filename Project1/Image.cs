@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Linq;
 using System.Windows.Forms;
@@ -18,9 +19,9 @@ namespace ImageProcess
         private Bitmap postImage;
         private MODE mode = MODE.ORIGINAL;
 
-        public Bitmap BaseImage { get => baseImage;  }
-        public Bitmap PostImage { get => postImage; }
-        public int Offset { get => offset; }
+        public Bitmap BaseImage => baseImage;
+        public Bitmap PostImage => postImage;
+        public int Offset => offset;
 
         /// <summary>
         /// yOffset should be the menu bar height
@@ -32,12 +33,23 @@ namespace ImageProcess
             baseImage = new Bitmap(600, 400);
         }
 
+        public Image(Image image)
+        {
+            offset = image.Offset;
+            baseImage = new Bitmap(image.BaseImage);
+        }
+
         /// <summary>
         /// reset to base image
         /// </summary>
         public void Reset()
         {
             postImage = new Bitmap(baseImage);
+        }
+
+        public void Rebase()
+        {
+            baseImage = new Bitmap(postImage);
         }
 
         /// <summary>
@@ -200,6 +212,111 @@ namespace ImageProcess
         {
             baseImage = null;
             postImage = null;
+        }
+
+        public void ApplyKernel(double[][] kernel)
+        {
+            Reset();
+            Color mostCommonColor = GetMostCommonColor();
+            int filterWidth = kernel.Count();
+            int filterHeight = kernel.First().Count();
+
+            if (filterWidth % 2 != 1 || filterHeight % 2 != 1)
+            {
+                throw new ArgumentException("Height and width of filter must be an odd numbers");
+            }
+
+            foreach (var filterRow in kernel)
+            {
+                if (filterRow.Count() != filterHeight)
+                {
+                    throw new ArgumentException("Width arrays must all be the same length");
+                }
+            }
+
+            //loop over pixels
+            for (int imageRow = 0; imageRow < postImage.Height; imageRow++)
+            {
+                for (int imageCol = 0; imageCol < postImage.Width; imageCol++)
+                {
+                    double tallyR = 0;
+                    double tallyG = 0;
+                    double tallyB = 0;
+
+                    int filterRowLoc = -(filterHeight / 2);
+
+                    foreach (var filterRow in kernel)
+                    {
+                        int imageRowLocation = imageRow + filterRowLoc;
+                        int filterColLoc = -(filterWidth / 2);
+
+                        foreach (var filterValue in filterRow)
+                        {
+                            int imageColLocation = imageCol + filterColLoc;
+                            //assumes anything outside the border of the immage is the most common color in the image
+                            Color pixel = mostCommonColor;
+
+                            if (imageColLocation >= 0 && imageColLocation < postImage.Width &&
+                                imageRowLocation >= 0 && imageRowLocation < postImage.Height)
+                            {
+                                pixel = baseImage.GetPixel(imageColLocation, imageRowLocation);
+                            }
+
+                            tallyR += pixel.R * filterValue;
+                            tallyG += pixel.G * filterValue;
+                            tallyB += pixel.B * filterValue;
+
+                            filterColLoc++;
+                        }
+
+                        filterRowLoc++;
+                    }
+
+                    Color newPixel = Color.FromArgb(tallyR.ToInt().Normalize(), tallyG.ToInt().Normalize(), tallyB.ToInt().Normalize());
+                    postImage.SetPixel(imageCol, imageRow, newPixel);
+                }
+            }
+        }
+
+        public delegate Color ColorModification(Color color);
+        public delegate Color ColorModificationWithLocation(Color color, int x, int y);
+        public void ApplyDelegate(ColorModificationWithLocation cm)
+        {
+            Reset();
+
+            for (int row = 0; row < baseImage.Height; row++)
+            {
+                for (int col = 0; col < baseImage.Width; col++)
+                {
+                    Color newcolor = cm(baseImage.GetPixel(col, row), col, row);
+                    postImage.SetPixel(col, row, newcolor);
+                }
+            }
+        }
+
+        public void ApplyDelegate(ColorModification cm)
+        {
+            Reset();
+
+            for (int row = 0; row < baseImage.Height; row++)
+            {
+                for (int col = 0; col < baseImage.Width; col++)
+                {
+                    Color newcolor = cm(baseImage.GetPixel(col, row));
+                    postImage.SetPixel(col, row, newcolor);
+                }
+            }
+        }
+
+        public void ApplyMatrix(System.Windows.Media.Matrix matrix)
+        {
+            Matrix twoDmatrix = new Matrix(
+                (float)matrix.M11, (float)matrix.M12,
+                (float)matrix.M21, (float)matrix.M22,
+                (float)matrix.OffsetX, (float)matrix.OffsetY);
+
+            Graphics g = Graphics.FromImage(postImage);
+            g.MultiplyTransform(twoDmatrix);
         }
     }
 }

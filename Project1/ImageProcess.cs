@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 
@@ -13,12 +14,12 @@ namespace ImageProcess
         private Vector delta;
         private Vector gamma;
         private bool nearest = false;
-        private int clickCnt =0;
+        private int clickCnt = 0;
 
 
-        public override void SetMode(MODE m) 
-        { 
-            switch(m)
+        public override void SetMode(MODE m)
+        {
+            switch (m)
             {
                 case MODE.Threshold:
                     mouseMode = MODE.Threshold;
@@ -55,121 +56,46 @@ namespace ImageProcess
         /// <param name="image"></param>
         public static void OnFilterNegative(Image image)
         {
-            // Make the output image the same size as the input image
-            image.Reset();
-
-            for (int r = 0; r < image.BaseImage.Height; r++)
-            {
-                for (int c = 0; c < image.BaseImage.Width; c++)
-                {
-                    Color temp = image.BaseImage.GetPixel(c, r);
-                    temp = Color.FromArgb(255 - temp.R,
-                                          255 - temp.G,
-                                          255 - temp.B);
-                    image.PostImage.SetPixel(c, r, temp);
-                }
-            }
+            image.ApplyDelegate(c => Color.FromArgb(255 - c.R, 255 - c.G, 255 - c.B));
         }
 
         public static void OnFilterDim(Image image)
         {
 
-            // reset the filtered image and make the same size as the input image
-            image.Reset();
-
-            for (int r = 0; r < image.PostImage.Height; r++)
-            {
-                for (int c = 0; c < image.PostImage.Width; c++)
-                {
-                    Color temp = image.BaseImage.GetPixel(c, r);
-                    temp = ColorMultiply(0.33, temp);
-                    image.PostImage.SetPixel(c, r, temp);
-                }
-
-            }
+            image.ApplyDelegate(c => ColorMultiply(0.33, c));
         }
 
         public static void OnFilterTint(Image image)
         {
-            // reset the filtered image and make the same size as the input image
-            image.Reset();
-
-            for (int r = 0; r < image.PostImage.Height; r++)
-            {
-                for (int c = 0; c < image.PostImage.Width; c++)
-                {
-                    Color temp = image.BaseImage.GetPixel(c, r);
-                    temp = Color.FromArgb(
-                        ClampColorElem(0.33 * temp.R),
-                        ClampColorElem(temp.G),
-                        ClampColorElem(0.66 * temp.B));
-                    image.PostImage.SetPixel(c, r, temp);
-                }
-            }
+            image.ApplyDelegate(c => Color.FromArgb(
+                        ClampColorElem(0.33 * c.R),
+                        ClampColorElem(c.G),
+                        ClampColorElem(0.66 * c.B)));
         }
 
         public static void OnFilterLowpass(Image image)
         {
-            // reset the filtered image and make the same size as the input image
-            image.Reset();
             int range = 3;
 
-            //loop over pixels
-            for (int r = 0; r < image.PostImage.Height; r++)
+            int filterSize = (range * 2) + 1;
+            double filterValue = (double)1 / (filterSize * filterSize);
+
+            double[][] filter = new double[filterSize][];
+
+            for (int i = 0; i < filterSize; i++)
             {
-                for (int c = 0; c < image.PostImage.Width; c++)
-                {
-                    Color pixel;
-                    int tallyR = 0;
-                    int tallyG = 0;
-                    int tallyB = 0;
-
-                    //loop over square around this pixel, watching boundaries
-                    for (int i = -range; i <= range; i++)
-                    {
-                        if ((r + i) >= 0 && (r + i) < image.PostImage.Height)
-                        {
-
-                            for (int j = -range; j <= range; j++)
-                            {
-                                if ((c + j) >= 0 && (c + j) < image.PostImage.Width)
-                                {
-                                    //tally channels
-                                    pixel = image.BaseImage.GetPixel(c + j, r + i);
-                                    tallyR += pixel.R;
-                                    tallyG += pixel.G;
-                                    tallyB += pixel.B;
-                                }
-                            }
-                        }
-                    }
-
-                    //average values, and set
-                    int square = 2 * range + 1;
-                    square *= square;
-                    pixel = Color.FromArgb(tallyR / square, tallyG / square, tallyB / square);
-                    image.PostImage.SetPixel(c, r, pixel);
-                }
+                filter[i] = Enumerable.Repeat(filterValue, filterSize).ToArray();
             }
+
+            image.ApplyKernel(filter);
         }
 
         public static void OnFilterMonochrome(Image image)
         {
-            // reset the filtered image and make the same size as the input image
-            image.Reset();
-
-            //loop over pixels
-            for (int r = 0; r < image.PostImage.Height; r++)
-            {
-                for (int c = 0; c < image.PostImage.Width; c++)
-                {
-                    Color pixel = image.BaseImage.GetPixel(c, r);
-                    int avgPixelValue = (pixel.R + pixel.G + pixel.B) / 3;
-
-                    pixel = Color.FromArgb(avgPixelValue, avgPixelValue, avgPixelValue);
-                    image.PostImage.SetPixel(c, r, pixel);
-                }
-            }
+            image.ApplyDelegate(c => {
+                int avgPixelValue = (c.R + c.G + c.B) / 3;
+                return Color.FromArgb(avgPixelValue, avgPixelValue, avgPixelValue);
+            });
         }
 
         public static void OnMedianFilter(Image image)
@@ -201,7 +127,7 @@ namespace ImageProcess
                                 if ((c + j) >= 0 && (c + j) < image.PostImage.Width)
                                 {
                                     //tally channels
-                                    if(!(i == 0 && j == 0))
+                                    if (!(i == 0 && j == 0))
                                     {
                                         pixel = image.BaseImage.GetPixel(c + j, r + i);
                                         rPixels.Add(pixel.R);
@@ -453,7 +379,7 @@ namespace ImageProcess
                         // This is a test for the color white, which is what I'll 
                         // consider to be transparent.  We only use colors that are
                         // not the pure white color.
-                        if (!(stickman.GetPixel(ix, iy).A< 5 || ColorEqual(stickman.GetPixel(ix, iy), Color.White)))
+                        if (!(stickman.GetPixel(ix, iy).A < 5 || ColorEqual(stickman.GetPixel(ix, iy), Color.White)))
                         {
                             if (nearest)
                             {
@@ -551,7 +477,7 @@ namespace ImageProcess
         public override void MouseRelease()
         {
             // We count the mouse clicks
-            if(mouseMode == MODE.Move)
+            if (mouseMode == MODE.Move)
                 mouseMode = MODE.Draw;
         }
 
@@ -561,7 +487,7 @@ namespace ImageProcess
         //
 
 
-         //
+        //
         //helper functions------------------------------------------------------------
         //
 
@@ -638,7 +564,7 @@ namespace ImageProcess
             int medianIndex = pixels.Count / 2;
             pixels.Sort();
 
-            if(pixels.Count % 2 == 0)
+            if (pixels.Count % 2 == 0)
             {
                 return (pixels[medianIndex] + pixels[medianIndex - 1]) / 2;
             }

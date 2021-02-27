@@ -65,6 +65,7 @@
             this.warpBilinearMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.project1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.blurSharpenContrastFilterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pointillizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.featureExtractionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.linearWarpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.nonLinearWarpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -77,7 +78,7 @@
             this.blueScreeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-            this.pointillizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.sorbelFilter5X5ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -368,8 +369,17 @@
             this.blurSharpenContrastFilterToolStripMenuItem.Size = new System.Drawing.Size(224, 22);
             this.blurSharpenContrastFilterToolStripMenuItem.Text = "Blur\\Sharpen\\Contrast\\Filter";
             // 
+            // pointillizeToolStripMenuItem
+            // 
+            this.pointillizeToolStripMenuItem.Name = "pointillizeToolStripMenuItem";
+            this.pointillizeToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
+            this.pointillizeToolStripMenuItem.Text = "Pointillize ";
+            this.pointillizeToolStripMenuItem.Click += new System.EventHandler(this.pointillizeToolStripMenuItem_Click);
+            // 
             // featureExtractionToolStripMenuItem
             // 
+            this.featureExtractionToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.sorbelFilter5X5ToolStripMenuItem});
             this.featureExtractionToolStripMenuItem.Name = "featureExtractionToolStripMenuItem";
             this.featureExtractionToolStripMenuItem.Size = new System.Drawing.Size(224, 22);
             this.featureExtractionToolStripMenuItem.Text = "Feature Extraction";
@@ -416,12 +426,14 @@
             this.prewitt5X5ToolStripMenuItem.Name = "prewitt5X5ToolStripMenuItem";
             this.prewitt5X5ToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
             this.prewitt5X5ToolStripMenuItem.Text = "Prewitt (5X5)";
+            this.prewitt5X5ToolStripMenuItem.Click += new System.EventHandler(this.prewitt5X5ToolStripMenuItem_Click);
             // 
             // centerRotateToolStripMenuItem
             // 
             this.centerRotateToolStripMenuItem.Name = "centerRotateToolStripMenuItem";
             this.centerRotateToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
             this.centerRotateToolStripMenuItem.Text = "Center Rotate";
+            this.centerRotateToolStripMenuItem.Click += new System.EventHandler(this.centerRotateToolStripMenuItem_Click);
             // 
             // horizontalFlipTranslateToolStripMenuItem
             // 
@@ -445,12 +457,12 @@
             this.saveFileDialog1.Filter = "JPEG Files (*.jpg)|*.jpg|GIF Files (*.gif)|*.gif|PNG Files (*.png)|*.png|BMP File" +
     "s (*.bmp)| *.bmp";
             // 
-            // pointillizeToolStripMenuItem
+            // sorbelFilter5X5ToolStripMenuItem
             // 
-            this.pointillizeToolStripMenuItem.Name = "pointillizeToolStripMenuItem";
-            this.pointillizeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.pointillizeToolStripMenuItem.Text = "Pointillize ";
-            this.pointillizeToolStripMenuItem.Click += new System.EventHandler(this.pointillizeToolStripMenuItem_Click);
+            this.sorbelFilter5X5ToolStripMenuItem.Name = "sorbelFilter5X5ToolStripMenuItem";
+            this.sorbelFilter5X5ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.sorbelFilter5X5ToolStripMenuItem.Text = "Sorbel Filter 5X5";
+            this.sorbelFilter5X5ToolStripMenuItem.Click += new System.EventHandler(this.sorbelFilter5X5ToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -520,6 +532,7 @@
         private System.Windows.Forms.ToolStripMenuItem horizontalFlipTranslateToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem blueScreeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem pointillizeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem sorbelFilter5X5ToolStripMenuItem;
     }
 }
 

@@ -9,37 +9,26 @@ using System.Windows.Forms;
 * 
 * Total available points:  200 (250 for CSC 692)
 * 
-*  __ 8pt make a new\open\save image under a File Menu and add Project 1 menu
-*  __ 2pt display the current state of the image 
-*  __ 10pt A 5X5 square blur filter 
-*  __ 15pt A 5X5 Prewit or Sorbel filter 
-*  __ 10pt A rotate about the center (uses a dialog box to set the amount) 
-*  __ 15pt A flip horizontally and translate (x and y) afterwards (uses a dialog box to set the amount) 
-*  __ 20pt A blue or green screen composition. You may use a default image for the mask. 
-*  __ 30pt OPTIONAL for individuals, and required for teams slide show
+*  ✓________ 8pt make a new\open\save image under a File Menu and add Project 1 menu
+*  ✓________ 2pt display the current state of the image 
+*  ✓________ 10pt A 5X5 square blur filter 
+*  ✓________ 15pt A 5X5 Prewit or Sorbel filter 
+*  ________ 10pt A rotate about the center (uses a dialog box to set the amount) 
+*  ________ 15pt A flip horizontally and translate (x and y) afterwards (uses a dialog box to set the amount) 
+*  ________ 20pt A blue or green screen composition. You may use a default image for the mask. 
+*  ________ 30pt OPTIONAL for individuals, and required for teams slide show
 *  
-* _____________[?pt] Required Blur\Sharpen\Contrast\Filter
-* _____________[?pt] Other Blur\Sharpen\Contrast\Filter
-* ...
+* ✓________ [Pointilize 30pts] Required Blur\Sharpen\Contrast\Filter
 * 
-* _____________[?pt] Required Feature Extraction
-* _____________[?pt] Other Feature Extraction
-* ...
+* ✓________ [Sorbel 10pts] Required Feature Extraction
 * 
-* _____________[?pt] Required Linear warp
-* _____________[?pt] Other Linear warp
-* ...
+* ________ [?pt] Required Linear warp
 * 
-* _____________[?pt] Required Non-linear warp
-* _____________[?pt] Other Non-linear warp
-* ...
+* ________ [?pt] Required Non-linear warp
 * 
-* _____________[?pt] Required Composition
-* _____________[?pt] Other Composition
-* ...
+* ________ [?pt] Required Composition
 * 
-* _____________[?pt] OPTIONAL Misc 
-* ...
+* 
 * 
 * The grade you compute is the starting point for course staff, who reserve the 
 * right to change the grade if they disagree with your assessment and to deduct 
@@ -52,7 +41,7 @@ namespace ImageProcess
 {
     public partial class MainForm : Form
     {
-        enum ModelType { None, Generate, Process}; //mode for menu enabling
+        enum ModelType { None, Generate, Process }; //mode for menu enabling
 
         Image model;
         ImageEditor editor;
@@ -135,7 +124,7 @@ namespace ImageProcess
             editor.SetMode(ImageEditor.MODE.Draw);
 
             drawMenu.Checked = editor.MouseMode == ImageEditor.MODE.Draw;
-         
+
             Invalidate();
         }
 
@@ -223,7 +212,7 @@ namespace ImageProcess
         private void SetMenuOptionEnable(ModelType mode)
         {
             bool on = true;
-            switch(mode)
+            switch (mode)
             {
                 case ModelType.None:
                     on = false;
@@ -271,7 +260,7 @@ namespace ImageProcess
                     medianFilterToolStripMenuItem.Enabled = !on;
                     warpMenu.Enabled = !on;
                     warpBilinearMenu.Enabled = !on;
-                    
+
                     break;
                 case ModelType.Process:
                     drawMenu.Enabled = true;
@@ -297,7 +286,7 @@ namespace ImageProcess
                     warpMenu.Enabled = !on;
                     warpBilinearMenu.Enabled = !on;
                     break;
-            }    
+            }
         }
 
         private void fillGreenToolStripMenuItem_Click(object sender, EventArgs e)
@@ -309,7 +298,6 @@ namespace ImageProcess
         {
             editor.SetMode(ImageEditor.MODE.None);
             ImageProcess.OnFilterDim(model);
-            drawMenu.Checked = editor.MouseMode == ImageEditor.MODE.Draw;
 
             Invalidate();
         }
@@ -318,7 +306,6 @@ namespace ImageProcess
         {
             editor.SetMode(ImageEditor.MODE.None);
             ImageProcess.OnFilterTint(model);
-            drawMenu.Checked = editor.MouseMode == ImageEditor.MODE.Draw;
 
             Invalidate();
         }
@@ -327,7 +314,6 @@ namespace ImageProcess
         {
             editor.SetMode(ImageEditor.MODE.None);
             ImageProcess.OnFilterLowpass(model);
-            drawMenu.Checked = editor.MouseMode == ImageEditor.MODE.Draw;
 
             Invalidate();
         }
@@ -371,7 +357,6 @@ namespace ImageProcess
         {
             editor.SetMode(ImageEditor.MODE.None);
             ImageProcess.OnMedianFilter(model);
-            drawMenu.Checked = editor.MouseMode == ImageEditor.MODE.Draw;
 
             Invalidate();
         }
@@ -380,21 +365,46 @@ namespace ImageProcess
         {
             editor.SetMode(ImageEditor.MODE.None);
             ImageProcess.OnFilterMonochrome(model);
-            drawMenu.Checked = editor.MouseMode == ImageEditor.MODE.Draw;
 
             Invalidate();
         }
 
         private void sharpen3X3ToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            editor.SetMode(ImageEditor.MODE.None);
+            ImageProcess.OnSharpen3X3(model);
 
+            Invalidate();
         }
 
         private void pointillizeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             editor.SetMode(ImageEditor.MODE.None);
             ImageProcess.OnPointillize(model);
-            drawMenu.Checked = editor.MouseMode == ImageEditor.MODE.Draw;
+
+            Invalidate();
+        }
+
+        private void prewitt5X5ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            editor.SetMode(ImageEditor.MODE.None);
+            ImageProcess.OnPrewitt5X5(model);
+
+            Invalidate();
+        }
+
+        private void sorbelFilter5X5ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            editor.SetMode(ImageEditor.MODE.None);
+            ImageProcess.OnSorbel5X5(model);
+
+            Invalidate();
+        }
+
+        private void centerRotateToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            editor.SetMode(ImageEditor.MODE.None);
+            ImageProcess.OnRotate(model);
 
             Invalidate();
         }
