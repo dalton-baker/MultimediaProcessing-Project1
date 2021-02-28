@@ -25,7 +25,7 @@ using System.Windows.Forms;
 * 
 * ✓________ [Linear warp a sub selection 20pt] Required Linear warp
 * 
-* ________ [?pt] Required Non-linear warp
+* ✓________ [Circle 50pt] Required Non-linear warp
 * 
 * ________ [?pt] Required Composition
 * 
@@ -471,6 +471,44 @@ namespace ImageProcess
             ImageProcess.OnSubSectionWarp(model);
 
             Invalidate();
+        }
+
+        private void randToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            editor.SetMode(ImageEditor.MODE.None);
+            ImageProcess.OnCircleWrap(model);
+
+            Invalidate();
+        }
+
+        private void wavePatternToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            editor.SetMode(ImageEditor.MODE.None);
+            ImageProcess.OnWavePattern(model);
+
+            Invalidate();
+        }
+
+        private void circleWrapWithCornersToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            editor.SetMode(ImageEditor.MODE.None);
+            ImageProcess.OnCircleWrapWithCornerExtension(model);
+
+            Invalidate();
+        }
+
+        private void gradientStripwToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            GridiantLineDialog dialog = new GridiantLineDialog(model);
+
+            if(dialog.ShowDialog() == DialogResult.OK)
+            {
+                editor.SetMode(ImageEditor.MODE.None);
+                ImageProcess.OnGradientStripe(model, dialog.LineLocation,
+                    dialog.LineThickness, dialog.IsVertical);
+
+                Invalidate();
+            }
         }
     }
 }

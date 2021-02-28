@@ -74,6 +74,12 @@
     <Compile Include="Dialogs\BluescreenDialog.Designer.cs">
       <DependentUpon>BluescreenDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\GridiantLineDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\GridiantLineDialog.Designer.cs">
+      <DependentUpon>GridiantLineDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\TranslateDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -100,6 +106,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\BluescreenDialog.resx">
       <DependentUpon>BluescreenDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\GridiantLineDialog.resx">
+      <DependentUpon>GridiantLineDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\TranslateDialog.resx">
       <DependentUpon>TranslateDialog.cs</DependentUpon>

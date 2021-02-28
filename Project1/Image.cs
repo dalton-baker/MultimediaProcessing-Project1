@@ -20,6 +20,8 @@ namespace ImageProcess
 
         public Bitmap BaseImage => baseImage;
         public Bitmap PostImage => postImage;
+        public int Height => baseImage.Height;
+        public int Width => baseImage.Width; 
         public int Offset { get; set; }
 
         /// <summary>
@@ -299,7 +301,8 @@ namespace ImageProcess
 
         public delegate Color ColorModification(Color color);
         public delegate Color ColorModificationWithLocation(Color color, int x, int y);
-        public void ApplyDelegate(ColorModificationWithLocation cm)
+        public delegate (int X, int Y) Mapping(int xInOutput, int yInOutput, int h, int w);
+        public void ApplyDelegate(ColorModificationWithLocation colorMod)
         {
             Reset();
 
@@ -307,24 +310,33 @@ namespace ImageProcess
             {
                 for (int col = 0; col < baseImage.Width; col++)
                 {
-                    Color newcolor = cm(baseImage.GetPixel(col, row), col, row);
+                    Color newcolor = colorMod(baseImage.GetPixel(col, row), col, row);
                     postImage.SetPixel(col, row, newcolor);
                 }
             }
         }
 
-        public void ApplyDelegate(ColorModification cm)
+        public void ApplyDelegate(ColorModification colorMod)
         {
             Reset();
+            ApplyDelegate((c, x, y) => colorMod(c));
+        }
 
-            for (int row = 0; row < baseImage.Height; row++)
+        public void ApplyMapping(Mapping mapping)
+        {
+            Clear();
+
+            ApplyDelegate((c, x, y) =>
             {
-                for (int col = 0; col < baseImage.Width; col++)
+                var (baseX, baseY) = mapping(x, y, baseImage.Height, baseImage.Width);
+
+                if (baseX < baseImage.Width && baseX >= 0 &&
+                   baseY < baseImage.Height && baseY >= 0)
                 {
-                    Color newcolor = cm(baseImage.GetPixel(col, row));
-                    postImage.SetPixel(col, row, newcolor);
+                    return baseImage.GetPixel(baseX, baseY);
                 }
-            }
+                return Color.White;
+            });
         }
 
         public void ApplyMatrix(System.Windows.Media.Matrix matrix, Image imageToDraw = null)

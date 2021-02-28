@@ -80,6 +80,11 @@
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.subSectionWarpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.circleWrapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.wavePatternToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+            this.circleWrapWithCornersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.gradientStripwToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -402,12 +407,19 @@
             // 
             // nonLinearWarpToolStripMenuItem
             // 
+            this.nonLinearWarpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.circleWrapToolStripMenuItem,
+            this.circleWrapWithCornersToolStripMenuItem,
+            this.toolStripSeparator5,
+            this.wavePatternToolStripMenuItem});
             this.nonLinearWarpToolStripMenuItem.Name = "nonLinearWarpToolStripMenuItem";
             this.nonLinearWarpToolStripMenuItem.Size = new System.Drawing.Size(224, 22);
             this.nonLinearWarpToolStripMenuItem.Text = "Non-Linear Warp";
             // 
             // compositionToolStripMenuItem
             // 
+            this.compositionToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.gradientStripwToolStripMenuItem});
             this.compositionToolStripMenuItem.Name = "compositionToolStripMenuItem";
             this.compositionToolStripMenuItem.Size = new System.Drawing.Size(224, 22);
             this.compositionToolStripMenuItem.Text = "Composition";
@@ -475,6 +487,39 @@
             this.subSectionWarpToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.subSectionWarpToolStripMenuItem.Text = "Sub Section Warp";
             this.subSectionWarpToolStripMenuItem.Click += new System.EventHandler(this.subSectionWarpToolStripMenuItem_Click);
+            // 
+            // circleWrapToolStripMenuItem
+            // 
+            this.circleWrapToolStripMenuItem.Name = "circleWrapToolStripMenuItem";
+            this.circleWrapToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
+            this.circleWrapToolStripMenuItem.Text = "Circle Wrap";
+            this.circleWrapToolStripMenuItem.Click += new System.EventHandler(this.randToolStripMenuItem_Click);
+            // 
+            // wavePatternToolStripMenuItem
+            // 
+            this.wavePatternToolStripMenuItem.Name = "wavePatternToolStripMenuItem";
+            this.wavePatternToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
+            this.wavePatternToolStripMenuItem.Text = "Wave Pattern";
+            this.wavePatternToolStripMenuItem.Click += new System.EventHandler(this.wavePatternToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator5
+            // 
+            this.toolStripSeparator5.Name = "toolStripSeparator5";
+            this.toolStripSeparator5.Size = new System.Drawing.Size(204, 6);
+            // 
+            // circleWrapWithCornersToolStripMenuItem
+            // 
+            this.circleWrapWithCornersToolStripMenuItem.Name = "circleWrapWithCornersToolStripMenuItem";
+            this.circleWrapWithCornersToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
+            this.circleWrapWithCornersToolStripMenuItem.Text = "Circle Wrap With Corners";
+            this.circleWrapWithCornersToolStripMenuItem.Click += new System.EventHandler(this.circleWrapWithCornersToolStripMenuItem_Click);
+            // 
+            // gradientStripwToolStripMenuItem
+            // 
+            this.gradientStripwToolStripMenuItem.Name = "gradientStripwToolStripMenuItem";
+            this.gradientStripwToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.gradientStripwToolStripMenuItem.Text = "Gradient Stripe";
+            this.gradientStripwToolStripMenuItem.Click += new System.EventHandler(this.gradientStripwToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -546,6 +591,11 @@
         private System.Windows.Forms.ToolStripMenuItem pointillizeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem sorbelFilter5X5ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem subSectionWarpToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem circleWrapToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
+        private System.Windows.Forms.ToolStripMenuItem wavePatternToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem circleWrapWithCornersToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem gradientStripwToolStripMenuItem;
     }
 }
 

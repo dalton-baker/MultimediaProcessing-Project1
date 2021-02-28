@@ -11,15 +11,15 @@ namespace ImageProcess
             image.Reset();
 
             int elipseSize = 14;
-            int numberOfPoints = image.BaseImage.Width * image.BaseImage.Height / (elipseSize / 2);
+            int numberOfPoints = image.Width * image.Height / (elipseSize / 2);
             Random rand = new Random();
             image.Clear(Color.White);
             Graphics g = Graphics.FromImage(image.PostImage);
 
             for (int i = 0; i < numberOfPoints; i++)
             {
-                int randX = rand.Next(0, image.BaseImage.Width);
-                int randY = rand.Next(0, image.BaseImage.Height);
+                int randX = rand.Next(0, image.Width);
+                int randY = rand.Next(0, image.Height);
 
                 SolidBrush brush = new SolidBrush(image.BaseImage.GetPixel(randX, randY));
                 g.FillEllipse(brush, randX - elipseSize / 2, randY - elipseSize / 2, elipseSize, elipseSize);
@@ -135,7 +135,7 @@ namespace ImageProcess
             image.Reset();
 
             Matrix rotate = Matrix.Identity;
-            rotate.RotateAt(angle, image.BaseImage.Width / 2, image.BaseImage.Height / 2);
+            rotate.RotateAt(angle, image.Width / 2, image.Height / 2);
 
             image.ApplyMatrix(rotate);
         }
@@ -158,13 +158,13 @@ namespace ImageProcess
             frontImg.Reset();
 
             backImg.ApplyDelegate((c, x, y) =>
-            {                
-                if (x < frontImg.PostImage.Width + xOffset && x >= xOffset &&
-                    y < frontImg.PostImage.Height + yOffset && y >= yOffset)
+            {
+                if (x < frontImg.Width + xOffset && x >= xOffset &&
+                    y < frontImg.Height + yOffset && y >= yOffset)
                 {
                     Color frontImgColor = frontImg.PostImage.GetPixel(x - xOffset, y - yOffset);
 
-                    double alpha = 1 - (a1 * ((frontImgColor.B/255.0) - (a2 * (frontImgColor.G / 255.0))));
+                    double alpha = 1 - (a1 * ((frontImgColor.B / 255.0) - (a2 * (frontImgColor.G / 255.0))));
 
                     int red = (int)((alpha * frontImgColor.R) + ((1 - alpha) * c.R));
                     int green = (int)((alpha * frontImgColor.G) + ((1 - alpha) * c.G));
@@ -184,11 +184,11 @@ namespace ImageProcess
 
             Random random = new Random(Guid.NewGuid().GetHashCode());
 
-            int xOffset = random.Next(0, image.BaseImage.Width / 2);
-            int yOffset = random.Next(0, image.BaseImage.Height / 2);
+            int xOffset = random.Next(0, image.Width / 2);
+            int yOffset = random.Next(0, image.Height / 2);
 
-            int subWidth = random.Next(image.BaseImage.Width / 4, image.BaseImage.Width / 2);
-            int subHeight = random.Next(image.BaseImage.Height / 4, image.BaseImage.Height / 2);
+            int subWidth = random.Next(image.Width / 4, image.Width / 2);
+            int subHeight = random.Next(image.Height / 4, image.Height / 2);
 
             Image subImage = new Image(0);
             subImage.OnOpenImage(new Bitmap(subWidth, subHeight));
@@ -210,6 +210,102 @@ namespace ImageProcess
 
                 return c;
             });
+        }
+
+        public static void OnGradientStripe(Image image, int lineLoc, int lineThicness, bool isVert)
+        {
+            image.ApplyDelegate((c, x, y) =>
+            {
+                int distFromLine = isVert ? Math.Abs(x - lineLoc) : Math.Abs(y - lineLoc);
+                double alpha = Math.Max(0, Math.Min(1, (distFromLine / (double)lineThicness)));
+
+                int r = (int)(alpha * c.R) + (int)((1 - alpha) * 255);
+                int g = (int)(alpha * c.G);
+                int b = (int)(alpha * c.B);
+
+                return Color.FromArgb(r, g, b);
+            });
+        }
+
+
+        public static void OnCircleWrap(Image image)
+        {
+            image.Reset();
+
+            image.ApplyMapping(CircleWrapMapping);
+        }
+
+        public static void OnWavePattern(Image image)
+        {
+            image.Reset();
+
+            image.ApplyMapping(WavePaternMapping);
+        }
+
+        public static void OnCircleWrapWithCornerExtension(Image image)
+        {
+            image.Reset();
+
+            image.ApplyMapping(CircleWrapMappingWithCornerExtension);
+        }
+
+        private static (int, int) WavePaternMapping(int newX, int newY, int h, int w)
+        {
+            //This function was provided by Dr. R!!!! It is NOT mine
+
+            double distFromCenter = Math.Sqrt((newX - w / 2.0) * (newX - w / 2.0) +
+                (newY - h / 2.0) * (newY - h / 2.0));
+
+            // Offset amount?
+            double offset = Math.Sin(distFromCenter / 50.0 * 6.2830) * 20;
+
+            // This is the equivalent point in the source image 
+            double distFromCenterInOrig = distFromCenter + offset;
+            double origX = w / 2 + distFromCenterInOrig / distFromCenter * (newX - w / 2);
+            double origY = h / 2 + distFromCenterInOrig / distFromCenter * (newY - h / 2);
+
+            return (origX.ToInt(), origY.ToInt());
+        }
+
+        private static (int, int) CircleWrapMapping(int newX, int newY, int h, int w)
+        {
+            int centerCircleRadius = Math.Min(h, w) / 6;
+
+            double distFromCenter = Math.Sqrt((newX - w / 2.0) * (newX - w / 2.0) +
+                (newY - h / 2.0) * (newY - h / 2.0)) - centerCircleRadius;
+
+            double angleRad = Math.PI + Math.Atan2((newX - w / 2.0), (newY - h / 2.0));
+            double angle = angleRad * (180 / Math.PI);
+
+            double percentAroundCircle = angle / 360.1;
+            double percentToEndgeFromCenter = distFromCenter / ((Math.Min(h , w) / 2.0) - centerCircleRadius);
+
+            double origY = h * percentToEndgeFromCenter;
+            double origX = w * percentAroundCircle;
+
+            return (origX.ToInt(), origY.ToInt());
+        }
+
+        private static (int, int) CircleWrapMappingWithCornerExtension(int newX, int newY, int h, int w)
+        {
+            int centerCircleRadius = Math.Min(h, w) / 6;
+
+            double distFromCenter = Math.Sqrt((newX - w / 2.0) * (newX - w / 2.0) +
+                (newY - h / 2.0) * (newY - h / 2.0)) - centerCircleRadius;
+
+            double angleRad = Math.PI + Math.Atan2((newX - w / 2.0), (newY - h / 2.0));
+            double angle = angleRad * (180 / Math.PI);
+
+            double distanceToEdgeAtAngle = Math.Min(Math.Abs((h / 2.0) / Math.Cos(angleRad)), 
+                Math.Abs((w / 2.0) / Math.Cos((Math.PI / 2) - angleRad)));
+
+            double percentAroundCircle = angle / 360.1;
+            double percentToEndgeFromCenter = (distFromCenter - 0.1 ) / (distanceToEdgeAtAngle - centerCircleRadius);
+
+            double origY = h * percentToEndgeFromCenter;
+            double origX = w * percentAroundCircle;
+
+            return (origX.ToInt(), origY.ToInt());
         }
     }
 }
