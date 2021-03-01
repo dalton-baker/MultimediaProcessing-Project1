@@ -23,6 +23,7 @@ namespace ImageProcess
         public int Height => baseImage.Height;
         public int Width => baseImage.Width; 
         public int Offset { get; set; }
+        public bool IsNewImage => mode == MODE.ORIGINAL;
 
         /// <summary>
         /// yOffset should be the menu bar height

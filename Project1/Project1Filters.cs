@@ -152,7 +152,7 @@ namespace ImageProcess
             image.ApplyMatrix(t1, tempImage);
         }
 
-        public static void OnGreenScreen(Image backImg, Image frontImg, double a1, double a2, int xOffset = 0, int yOffset = 0)
+        public static void OnBlueScreen(Image backImg, Image frontImg, double a1, double a2, int xOffset = 0, int yOffset = 0)
         {
             backImg.Reset();
             frontImg.Reset();
@@ -242,11 +242,11 @@ namespace ImageProcess
             image.ApplyMapping(WavePaternMapping);
         }
 
-        public static void OnCircleWrapWithCornerExtension(Image image)
+        public static void OnCenterWrapWithCornerExtension(Image image)
         {
             image.Reset();
 
-            image.ApplyMapping(CircleWrapMappingWithCornerExtension);
+            image.ApplyMapping(CenterWrapWithCornerExtensionMapping);
         }
 
         private static (int, int) WavePaternMapping(int newX, int newY, int h, int w)
@@ -286,12 +286,10 @@ namespace ImageProcess
             return (origX.ToInt(), origY.ToInt());
         }
 
-        private static (int, int) CircleWrapMappingWithCornerExtension(int newX, int newY, int h, int w)
+        private static (int, int) CenterWrapWithCornerExtensionMapping(int newX, int newY, int h, int w)
         {
-            int centerCircleRadius = Math.Min(h, w) / 6;
-
             double distFromCenter = Math.Sqrt((newX - w / 2.0) * (newX - w / 2.0) +
-                (newY - h / 2.0) * (newY - h / 2.0)) - centerCircleRadius;
+                (newY - h / 2.0) * (newY - h / 2.0));
 
             double angleRad = Math.PI + Math.Atan2((newX - w / 2.0), (newY - h / 2.0));
             double angle = angleRad * (180 / Math.PI);
@@ -300,7 +298,7 @@ namespace ImageProcess
                 Math.Abs((w / 2.0) / Math.Cos((Math.PI / 2) - angleRad)));
 
             double percentAroundCircle = angle / 360.1;
-            double percentToEndgeFromCenter = (distFromCenter - 0.1 ) / (distanceToEdgeAtAngle - centerCircleRadius);
+            double percentToEndgeFromCenter = (distFromCenter - 0.1 ) / (distanceToEdgeAtAngle);
 
             double origY = h * percentToEndgeFromCenter;
             double origX = w * percentAroundCircle;

@@ -32,7 +32,6 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newMenu = new System.Windows.Forms.ToolStripMenuItem();
-            this.openTestMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.openMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.closeMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.saveMenu = new System.Windows.Forms.ToolStripMenuItem();
@@ -85,6 +84,13 @@
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.circleWrapWithCornersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.gradientStripwToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fileToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pawprintToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.newYorkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.bluescreenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.barsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.rebaseImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -105,7 +111,6 @@
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.newMenu,
-            this.openTestMenu,
             this.openMenu,
             this.closeMenu,
             this.saveMenu,
@@ -121,19 +126,18 @@
             this.newMenu.Text = "New";
             this.newMenu.Click += new System.EventHandler(this.newMenu_Click);
             // 
-            // openTestMenu
-            // 
-            this.openTestMenu.Name = "openTestMenu";
-            this.openTestMenu.Size = new System.Drawing.Size(180, 22);
-            this.openTestMenu.Text = "Open Test";
-            this.openTestMenu.Click += new System.EventHandler(this.openTestMenu_Click);
-            // 
             // openMenu
             // 
+            this.openMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem1,
+            this.testToolStripMenuItem,
+            this.pawprintToolStripMenuItem,
+            this.barsToolStripMenuItem,
+            this.newYorkToolStripMenuItem,
+            this.bluescreenToolStripMenuItem});
             this.openMenu.Name = "openMenu";
             this.openMenu.Size = new System.Drawing.Size(180, 22);
             this.openMenu.Text = "Open";
-            this.openMenu.Click += new System.EventHandler(this.openMenu_Click);
             // 
             // closeMenu
             // 
@@ -362,7 +366,8 @@
             this.linearWarpToolStripMenuItem,
             this.nonLinearWarpToolStripMenuItem,
             this.compositionToolStripMenuItem,
-            this.requiredToolStripMenuItem});
+            this.requiredToolStripMenuItem,
+            this.rebaseImageToolStripMenuItem});
             this.project1ToolStripMenuItem.Name = "project1ToolStripMenuItem";
             this.project1ToolStripMenuItem.Size = new System.Drawing.Size(65, 20);
             this.project1ToolStripMenuItem.Text = "Project 1";
@@ -491,27 +496,27 @@
             // circleWrapToolStripMenuItem
             // 
             this.circleWrapToolStripMenuItem.Name = "circleWrapToolStripMenuItem";
-            this.circleWrapToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
+            this.circleWrapToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
             this.circleWrapToolStripMenuItem.Text = "Circle Wrap";
             this.circleWrapToolStripMenuItem.Click += new System.EventHandler(this.randToolStripMenuItem_Click);
             // 
             // wavePatternToolStripMenuItem
             // 
             this.wavePatternToolStripMenuItem.Name = "wavePatternToolStripMenuItem";
-            this.wavePatternToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
+            this.wavePatternToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
             this.wavePatternToolStripMenuItem.Text = "Wave Pattern";
             this.wavePatternToolStripMenuItem.Click += new System.EventHandler(this.wavePatternToolStripMenuItem_Click);
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(204, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(209, 6);
             // 
             // circleWrapWithCornersToolStripMenuItem
             // 
             this.circleWrapWithCornersToolStripMenuItem.Name = "circleWrapWithCornersToolStripMenuItem";
-            this.circleWrapWithCornersToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
-            this.circleWrapWithCornersToolStripMenuItem.Text = "Circle Wrap With Corners";
+            this.circleWrapWithCornersToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
+            this.circleWrapWithCornersToolStripMenuItem.Text = "Center Wrap With Corners";
             this.circleWrapWithCornersToolStripMenuItem.Click += new System.EventHandler(this.circleWrapWithCornersToolStripMenuItem_Click);
             // 
             // gradientStripwToolStripMenuItem
@@ -520,6 +525,55 @@
             this.gradientStripwToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.gradientStripwToolStripMenuItem.Text = "Gradient Stripe";
             this.gradientStripwToolStripMenuItem.Click += new System.EventHandler(this.gradientStripwToolStripMenuItem_Click);
+            // 
+            // fileToolStripMenuItem1
+            // 
+            this.fileToolStripMenuItem1.Name = "fileToolStripMenuItem1";
+            this.fileToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.fileToolStripMenuItem1.Text = "File";
+            this.fileToolStripMenuItem1.Click += new System.EventHandler(this.openMenu_Click);
+            // 
+            // testToolStripMenuItem
+            // 
+            this.testToolStripMenuItem.Name = "testToolStripMenuItem";
+            this.testToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.testToolStripMenuItem.Text = "Test";
+            this.testToolStripMenuItem.Click += new System.EventHandler(this.testToolStripMenuItem_Click);
+            // 
+            // pawprintToolStripMenuItem
+            // 
+            this.pawprintToolStripMenuItem.Name = "pawprintToolStripMenuItem";
+            this.pawprintToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.pawprintToolStripMenuItem.Text = "Pawprint";
+            this.pawprintToolStripMenuItem.Click += new System.EventHandler(this.pawprintToolStripMenuItem_Click);
+            // 
+            // newYorkToolStripMenuItem
+            // 
+            this.newYorkToolStripMenuItem.Name = "newYorkToolStripMenuItem";
+            this.newYorkToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.newYorkToolStripMenuItem.Text = "New York";
+            this.newYorkToolStripMenuItem.Click += new System.EventHandler(this.newYorkToolStripMenuItem_Click);
+            // 
+            // bluescreenToolStripMenuItem
+            // 
+            this.bluescreenToolStripMenuItem.Name = "bluescreenToolStripMenuItem";
+            this.bluescreenToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.bluescreenToolStripMenuItem.Text = "Bluescreen";
+            this.bluescreenToolStripMenuItem.Click += new System.EventHandler(this.bluescreenToolStripMenuItem_Click);
+            // 
+            // barsToolStripMenuItem
+            // 
+            this.barsToolStripMenuItem.Name = "barsToolStripMenuItem";
+            this.barsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.barsToolStripMenuItem.Text = "Bars";
+            this.barsToolStripMenuItem.Click += new System.EventHandler(this.linesToolStripMenuItem_Click);
+            // 
+            // rebaseImageToolStripMenuItem
+            // 
+            this.rebaseImageToolStripMenuItem.Name = "rebaseImageToolStripMenuItem";
+            this.rebaseImageToolStripMenuItem.Size = new System.Drawing.Size(224, 22);
+            this.rebaseImageToolStripMenuItem.Text = "Rebase Image";
+            this.rebaseImageToolStripMenuItem.Click += new System.EventHandler(this.rebaseImageToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -551,7 +605,6 @@
         private System.Windows.Forms.ToolStripMenuItem mouseToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem copyMenu;
         private System.Windows.Forms.ToolStripMenuItem fillWhiteMenu;
-        private System.Windows.Forms.ToolStripMenuItem openTestMenu;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
         private System.Windows.Forms.ToolStripMenuItem negativeMenu;
@@ -596,6 +649,13 @@
         private System.Windows.Forms.ToolStripMenuItem wavePatternToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem circleWrapWithCornersToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem gradientStripwToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem testToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem pawprintToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem newYorkToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem bluescreenToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem barsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem rebaseImageToolStripMenuItem;
     }
 }
 

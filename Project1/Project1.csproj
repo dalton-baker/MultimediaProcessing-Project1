@@ -143,6 +143,7 @@
     <EmbeddedResource Include="res\Stickman.png" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="res\bar.jpg" />
     <Content Include="res\bluescreen.jpg" />
     <Content Include="res\ImageProcess.png" />
     <Content Include="res\ny.jpg" />

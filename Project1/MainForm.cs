@@ -1,5 +1,6 @@
 ﻿using ImageProcess.Dialogs;
 using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 /**********************************************************************************
@@ -12,8 +13,8 @@ using System.Windows.Forms;
 * 
 *  ✓________ 8pt make a new\open\save image under a File Menu and add Project 1 menu
 *  ✓________ 2pt display the current state of the image 
-*  ✓________ 10pt A 5X5 square blur filter 
-*  ✓________ 15pt A 3X3 Prewit or Sorbel filter 
+*  ✓________ 10pt A 3X3 square sharpen filter 
+*  ✓________ 15pt A 5X5 Prewit or Sorbel filter 
 *  ✓________ 10pt A rotate about the center (uses a dialog box to set the amount) 
 *  ✓________ 15pt A flip horizontally and translate (x and y) afterwards (uses a dialog box to set the amount) 
 *  ✓________ 20pt A blue or green screen composition. You may use a default image for the mask. 
@@ -25,9 +26,11 @@ using System.Windows.Forms;
 * 
 * ✓________ [Linear warp a sub selection 20pt] Required Linear warp
 * 
-* ✓________ [Circle 50pt] Required Non-linear warp
+* ✓________ [Center Wrap W/ Corner Ext 50pt] Required Non-linear warp
+*               - Dr. Rebenitsch assigned points for this one
+* ✓________ [Circle 50pt] Optional Non-linear warp
 * 
-* ________ [?pt] Required Composition
+* ✓________ [Gradient stripe 45pt] Required Composition
 * 
 * 
 * 
@@ -203,6 +206,13 @@ namespace ImageProcess
         {
             model.Close();
             model = null;
+
+            if(bluescreen != null)
+            {
+                bluescreen.Close();
+                bluescreen = null;
+            }
+
             SetMenuOptionEnable(ModelType.None);
             Invalidate();
         }
@@ -248,11 +258,11 @@ namespace ImageProcess
                     warpMenu.Enabled = on;
                     warpBilinearMenu.Enabled = on;
                     drawMenu.Enabled = on;
+                    closeMenu.Enabled = on;
                     drawMenu.Checked = false;
                     break;
                 case ModelType.Generate:
                     drawMenu.Enabled = true;
-
                     fillWhiteMenu.Enabled = on;
                     fillLavenderToolStripMenuItem.Enabled = on;
                     fillGreenToolStripMenuItem.Enabled = on;
@@ -270,7 +280,8 @@ namespace ImageProcess
                     lowpassFilterToolStripMenuItem.Enabled = !on;
                     monochromeToolStripMenuItem.Enabled = !on;
                     medianFilterToolStripMenuItem.Enabled = !on;
-                    project1ToolStripMenuItem.Enabled = !on;
+                    project1ToolStripMenuItem.Enabled = on;
+                    closeMenu.Enabled = on;
                     warpMenu.Enabled = !on;
                     warpBilinearMenu.Enabled = !on;
 
@@ -289,6 +300,7 @@ namespace ImageProcess
                     horizontalLineToolStripMenuItem.Enabled = on;
                     diagonalLineToolStripMenuItem.Enabled = on;
                     project1ToolStripMenuItem.Enabled = !on;
+                    closeMenu.Enabled = !on;
                     copyMenu.Enabled = !on;
                     negativeMenu.Enabled = !on;
                     thresholdMenu.Enabled = !on;
@@ -387,6 +399,8 @@ namespace ImageProcess
         {
             editor.SetMode(ImageEditor.MODE.None);
             ImageProcess.OnSharpen3X3(model);
+            if (model.IsNewImage)
+                model.Rebase();
 
             Invalidate();
         }
@@ -395,6 +409,8 @@ namespace ImageProcess
         {
             editor.SetMode(ImageEditor.MODE.None);
             ImageProcess.OnPointillize(model);
+            if (model.IsNewImage)
+                model.Rebase();
 
             Invalidate();
         }
@@ -403,6 +419,8 @@ namespace ImageProcess
         {
             editor.SetMode(ImageEditor.MODE.None);
             ImageProcess.OnPrewitt5X5(model);
+            if (model.IsNewImage)
+                model.Rebase();
 
             Invalidate();
         }
@@ -411,6 +429,8 @@ namespace ImageProcess
         {
             editor.SetMode(ImageEditor.MODE.None);
             ImageProcess.OnSorbel5X5(model);
+            if (model.IsNewImage)
+                model.Rebase();
 
             Invalidate();
         }
@@ -423,6 +443,8 @@ namespace ImageProcess
             {
                 editor.SetMode(ImageEditor.MODE.None);
                 ImageProcess.OnRotateCenter(model, dialog.Angle);
+                if (model.IsNewImage)
+                    model.Rebase();
 
                 Invalidate();
             }
@@ -436,6 +458,8 @@ namespace ImageProcess
             {
                 editor.SetMode(ImageEditor.MODE.None);
                 ImageProcess.OnFlipAndTranslate(model, dialog.X, dialog.Y);
+                if (model.IsNewImage)
+                    model.Rebase();
 
                 Invalidate();
             }
@@ -443,15 +467,10 @@ namespace ImageProcess
 
         private void blueScreeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            model = new Image(menuStrip1.Height);
-            model.OnOpenImage(Properties.Resources.NewYork, true);
-
-            bluescreen = new Image(menuStrip1.Height + model.BaseImage.Height);
-            bluescreen.OnOpenImage(Properties.Resources.Bluescreen);
-            editor = new ImageProcess();
+            bluescreenToolStripMenuItem_Click(null, null);
 
             editor.SetMode(ImageEditor.MODE.None);
-            ImageProcess.OnGreenScreen(model, bluescreen, 4.1, 1, 200);
+            ImageProcess.OnBlueScreen(model, bluescreen, 4.1, 1);
 
             Invalidate();
 
@@ -469,6 +488,8 @@ namespace ImageProcess
         {
             editor.SetMode(ImageEditor.MODE.None);
             ImageProcess.OnSubSectionWarp(model);
+            if (model.IsNewImage)
+                model.Rebase();
 
             Invalidate();
         }
@@ -477,6 +498,8 @@ namespace ImageProcess
         {
             editor.SetMode(ImageEditor.MODE.None);
             ImageProcess.OnCircleWrap(model);
+            if (model.IsNewImage)
+                model.Rebase();
 
             Invalidate();
         }
@@ -485,6 +508,8 @@ namespace ImageProcess
         {
             editor.SetMode(ImageEditor.MODE.None);
             ImageProcess.OnWavePattern(model);
+            if (model.IsNewImage)
+                model.Rebase();
 
             Invalidate();
         }
@@ -492,7 +517,9 @@ namespace ImageProcess
         private void circleWrapWithCornersToolStripMenuItem_Click(object sender, EventArgs e)
         {
             editor.SetMode(ImageEditor.MODE.None);
-            ImageProcess.OnCircleWrapWithCornerExtension(model);
+            ImageProcess.OnCenterWrapWithCornerExtension(model);
+            if (model.IsNewImage)
+                model.Rebase();
 
             Invalidate();
         }
@@ -507,8 +534,50 @@ namespace ImageProcess
                 ImageProcess.OnGradientStripe(model, dialog.LineLocation,
                     dialog.LineThickness, dialog.IsVertical);
 
+                if (model.IsNewImage)
+                    model.Rebase();
+
                 Invalidate();
             }
+        }
+
+        private void testToolStripMenuItem_Click(object sender, EventArgs e) =>
+            OpenResource(Properties.Resources.Stickman);
+
+        private void pawprintToolStripMenuItem_Click(object sender, EventArgs e) =>
+            OpenResource(Properties.Resources.Pawprint);
+
+        private void newYorkToolStripMenuItem_Click(object sender, EventArgs e) => 
+            OpenResource(Properties.Resources.NewYork);
+
+        private void linesToolStripMenuItem_Click(object sender, EventArgs e) =>
+            OpenResource(Properties.Resources.Bars);
+
+        private void bluescreenToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            bluescreen = new Image(menuStrip1.Height + model.BaseImage.Height);
+            bluescreen.OnOpenImage(Properties.Resources.Bluescreen);
+            editor = new ImageProcess();
+            Invalidate();
+        }
+
+        private void OpenResource(Bitmap resource)
+        {
+            model = new Image(menuStrip1.Height);
+            model.OnOpenImage(resource, true);
+            editor = new ImageProcess();
+            SetMenuOptionEnable(ModelType.Process);
+            if (bluescreen != null)
+            {
+                bluescreen.Offset = menuStrip1.Height + model.BaseImage.Height;
+            }
+            Invalidate();
+        }
+
+        private void rebaseImageToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            model.Rebase();
+            Invalidate();
         }
     }
 }
